@@ -1,0 +1,13 @@
+.demo-wrap {
+    .friend-item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid;
+        .status {
+            flex-grow: 1;
+        }
+        .button {
+            flex-basis: 100px;
+        }
+    }
+}

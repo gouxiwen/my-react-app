@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { PureComponent, Suspense } from 'react';
+import { Switch, HashRouter } from 'react-router-dom';
+import Loading from './components/Loading/Loading';
+import routes from './router';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { renderRoutes } from 'react-router-config';
+
+// PureComponent和Component的区别：
+// shouldComponentUpate()是用来判断组件是否需要更新的，默认为true
+// PureComponent会自动通过props和state的浅对比来实现shouldComponentUpate()，防止一些不必要的更新
+// Component没有实现shouldComponentUpate()
+export default class App extends PureComponent {
+    render () {
+        return (
+            <HashRouter>
+                <Suspense fallback={<Loading />}>
+                    <Switch>
+                        {
+                            renderRoutes(routes)
+                            // AppRoute.map(item => {
+                            //     return <Route exact={item.exact} key={item.key} path={item.path} render={props => <item.component {...props} />} />;
+                            //     })
+                        }
+                    </Switch>
+                </Suspense>
+            </HashRouter>
+        )
+    }
 }
-
-export default App;

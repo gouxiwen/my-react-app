@@ -1,0 +1,6 @@
+react-redux：
+类组件中（老项目）：
+类组件中使用connect
+1.bindActionCreators可以传入对象和函数，传入什么返回什么
+函数式组件中（新项目支持hooks）：
+2.函数式组件中使用 hooks useSelector
