@@ -4,7 +4,8 @@ import axios from 'axios';
 // 实例配置默认值
 // axios默认以JSON格式发送data
 const baseConfig = {
-    baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1111/' : '',
+    // baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:1111/' : '', // 使用nodejs+mockjs
+    baseURL: process.env.NODE_ENV === 'development' ? '' : '', // 前端直接使用mockjs
     timeout: 5000,
     withCredentials: true
 };

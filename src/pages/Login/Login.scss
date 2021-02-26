@@ -4,6 +4,23 @@
     flex-direction: column;
     .top {
         height: 50%;
+        position: relative;
+        .login-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 500;
+            font-family: pingFangSC-Medium;
+            text-align: center;
+            color: white;
+            .zh {
+                font-size: xxx-large;
+            }
+            .en {
+                font-size: xx-large;
+            }
+        }
         .login-bg {
             width: 100%;
             height: 100%;

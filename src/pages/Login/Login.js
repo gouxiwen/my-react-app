@@ -115,7 +115,7 @@ const Login = (props) => {
             console.log(values)
             let res = await ajaxJson.post(API.LOGIN, values)
             console.log(res)
-            sessionStorage.setItem('userinfo', values)
+            sessionStorage.setItem('userinfo', JSON.stringify(values))
             setLoading(false)
             props.history.push('/index/message');
         } catch (error) {
@@ -126,6 +126,10 @@ const Login = (props) => {
     return (
         <div className="login-wrap">
             <div className="top">
+                <div className="login-title">
+                    <div className="zh">树洞平台后台管理系统</div> 
+                    <div className="en">Tree hole management system</div>
+                    </div>
                 <img className="login-bg" src={bg} alt="" />
             </div>
             <div className="bottom">
@@ -141,6 +145,7 @@ const Login = (props) => {
                         <Form.Item
                         name="username"
                         label=""
+                        initialValue='admin'
                         rules={[
                             {
                                 required: true, min: 4, max: 10, message: '用户名为4-10个字符',
@@ -151,13 +156,13 @@ const Login = (props) => {
                         <Input
                         allowClear
                         placeholder="input name"
-                        // value={this.state.name}
                         // onChange={this.handleNameChange}
                         />
                         </Form.Item>
                         <Form.Item
                         name="password"
                         label=""
+                        initialValue='123456'
                         rules={[
                             {
                                 required: true, min: 6, max: 16, message: '密码为6-16个字符',
@@ -168,7 +173,6 @@ const Login = (props) => {
                         <Input.Password
                             allowClear
                             placeholder="input password"
-                            // value={this.state.password}
                             // onChange={this.handlePassChange}
                             iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         />
