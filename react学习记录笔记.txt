@@ -4,3 +4,54 @@ react-redux：
 1.bindActionCreators可以传入对象和函数，传入什么返回什么
 函数式组件中（新项目支持hooks）：
 2.函数式组件中使用 hooks useSelector
+开课吧学习部分：
+1.高阶组件HOC
+  一个函数接收一个组件，返回一个组件
+  作用：
+  1.可以进行链式调用
+  2.对传入对组件进行同一二次加工
+  3.可以用作类组件对装饰器
+  注意：
+  高阶组件不能用在render函数中，会导致重复挂载，状态丢失
+  code:Hocpage.js
+  （使用装饰器时会报错
+  vs code设置中搜experimentalDecorators，勾选
+  项目中解决方法参考：https://www.lmonkey.com/t/oZBdal0Ep
+  需要注意安装文章设置依然会报错，原因是react-app-rewired 升级到 2.x 以后直接干掉了所有 helpers，所以会报错
+  需要把react-app-rewired 进行降级后可以了，cnpm install react-app-rewired@2.0.2-next.0）
+2.表单组件
+  表单装饰器，基于高阶组件
+  react本身不支持双向绑定，antd组件内部实现了双向绑定
+  @Form.create({}) antd v4中已弃用，不能再通过@Form.create({})和this.props.form获取antd表单
+  使用formRef = React.createRef()和this.formRef.current代替,name.rules等属性移植到Form.Items上
+  code:FormPage.js
+3.利用高阶组件手动实现一个类似@Form.create({})装饰器kFormCreate，实现双向绑定和验证等功能
+  code:utils/kFormCreate.js
+4.利用传送门创建一个弹窗组件 react 16.3新增传送门createPortal
+  code:DialogPage.js
+5.上下文context
+  class组件中使用contextType挂载到类上，且只能挂载一个
+  class组件和函数式组件中都可以使用Consumer，并且多个上下文可以多层嵌套使用
+  code:ContextPage.js
+  注意事项：
+  如果父组件中Provider提供的value是个对象，则父组件每次更新都会导致子组件重新渲染，所以需要将这个对象提升到父组件的state中
+  如果state中的属性没有改变则不会进行重新渲染
+  如优化前：
+    <Provider value={{name: 'David'}}></Provider>
+  优化后：
+    this.state = { value: {name: 'David'}} 
+    <Provider value={this.state.value}></Provider>
+  原理：对象的等值判断特点
+  let obj = {name: 'David'}
+  如果右边的obj没有改变，则obj === obj为true
+  但是{name: 'David'} === {name: 'David'} 永远为false，这样Provider提供都value每次判断都是false就会重新赋值触发子组件渲染
+5.redux
+  1.理解compose聚合函数
+  code:utils/compose.js
+  2.使用redux
+  3.异步操作：
+  redux本身不支持异步，借助redux-thunk中间件实现，在action和reducer中间执行中间件
+  使用redux-thunk中间件调用dispatch会返回一个当前dispatch以支持异步后执行真正的action
+  redux-logger中间件用于记录日志
+  4.自己实现一个redux
+  code:kRedux.js

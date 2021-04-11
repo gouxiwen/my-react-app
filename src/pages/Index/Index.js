@@ -110,6 +110,14 @@ const Index = (props) => {
                             <Menu.Item key="/index/demo">demo</Menu.Item>
                             <Menu.Item key="/index/demo1">demo1</Menu.Item>
                         </SubMenu>
+                        <SubMenu key="sub3" icon={<LaptopOutlined />} title="开课吧学习demo">
+                            <Menu.Item key="/index/HocPage">高阶组件</Menu.Item>
+                            <Menu.Item key="/index/FormPage">表单装饰器</Menu.Item>
+                            <Menu.Item key="/index/kFormCreateDemo">自定义表单装饰器</Menu.Item>
+                            <Menu.Item key="/index/DialogPage">传送门实现弹窗组件</Menu.Item>
+                            <Menu.Item key="/index/ContextPage">上下文</Menu.Item>
+                            <Menu.Item key="/index/ReduxPage">redux</Menu.Item>
+                        </SubMenu>
                     </Menu> 
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>

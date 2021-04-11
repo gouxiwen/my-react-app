@@ -48,6 +48,54 @@ export default [
                 icon: 'demo1',
                 component: lazy(() => import('./pages/Demo/Demo1'))
             },
+            {
+                name: 'HocPage',
+                key: 'HocPage',
+                exact: true,
+                path: '/index/HocPage',
+                icon: 'HocPage',
+                component: lazy(() => import('./pages/HocPage/HocPage'))
+            },
+            {
+                name: 'FormPage',
+                key: 'FormPage',
+                exact: true,
+                path: '/index/FormPage',
+                icon: 'FormPage',
+                component: lazy(() => import('./pages/FormPage/FormPage'))
+            },
+            {
+                name: 'kFormCreateDemo',
+                key: 'kFormCreateDemo',
+                exact: true,
+                path: '/index/kFormCreateDemo',
+                icon: 'kFormCreateDemo',
+                component: lazy(() => import('./pages/kFormCreateDemo/kFormCreateDemo'))
+            },
+            {
+                name: 'DialogPage',
+                key: 'DialogPage',
+                exact: true,
+                path: '/index/DialogPage',
+                icon: 'DialogPage',
+                component: lazy(() => import('./pages/DialogPage/DialogPage'))
+            },
+            {
+                name: 'ContextPage',
+                key: 'ContextPage',
+                exact: true,
+                path: '/index/ContextPage',
+                icon: 'ContextPage',
+                component: lazy(() => import('./pages/ContextPage/ContextPage'))
+            },
+            {
+                name: 'ReduxPage',
+                key: 'ReduxPage',
+                exact: true,
+                path: '/index/ReduxPage',
+                icon: 'ReduxPage',
+                component: lazy(() => import('./pages/ReduxPage/ReduxPage'))
+            },
         ]
     },
     
