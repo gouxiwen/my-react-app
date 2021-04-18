@@ -1,8 +1,8 @@
-// import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 //引入中中间件
-// import logger from "redux-logger"
-// import thunk from "redux-thunk"
-import { createStore, applyMiddleware, logger, thunk } from '../kRedux'; // 自己实现的redux
+import logger from "redux-logger"
+import thunk from "redux-thunk"
+// import { createStore, applyMiddleware, logger, thunk } from '../kRedux'; // 自己实现的redux
 
 
 function countReducer(state = 0, action) {

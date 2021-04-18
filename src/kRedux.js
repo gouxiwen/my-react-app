@@ -50,6 +50,17 @@ export function applyMiddleware(...middlewares) {
   }
 }
 
+function bindActionCreator(creator, dispatch) {
+  return (...arg) => dispatch(creator(...arg))
+}
+export function bindActionCreators(creators, dispatch) {
+  let obj = {}
+  for (const key in creators) {
+    obj[key] = bindActionCreator(creators[key], dispatch)
+  }
+  return obj
+}
+
 // 聚合函数，参数数组中的方法从后向前调用，并将返回值作为参数产传递给前一个
 function compose(...funs) {
   if(funs.length === 0) {

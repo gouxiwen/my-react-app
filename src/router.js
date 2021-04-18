@@ -96,6 +96,14 @@ export default [
                 icon: 'ReduxPage',
                 component: lazy(() => import('./pages/ReduxPage/ReduxPage'))
             },
+            {
+                name: 'ReactReduxPage',
+                key: 'ReactReduxPage',
+                exact: true,
+                path: '/index/ReactReduxPage',
+                icon: 'ReactReduxPage',
+                component: lazy(() => import('./pages/ReactReduxPage/ReactReduxPage'))
+            },
         ]
     },
     

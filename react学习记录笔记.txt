@@ -55,3 +55,48 @@ react-redux：
   redux-logger中间件用于记录日志
   4.自己实现一个redux
   code:kRedux.js
+6.react-redux
+  react-redux是redux的react定制版，使用Provider注入store，使用connect在组件中使用，使得状态管理变得简单
+  1.使用react-redux
+  2.自己实现一个react-redux
+  code:kReactRedux.js
+7.react-router
+  1.Switch组件表示独占，即只能渲染一个路由
+  2.Route组件有三种渲染方式，children>component>render，都能接收到同样的route props，包括match，location和history
+    children和render都可以接收一个Function，区别是children方式不管localtion是否匹配都会渲染
+    component也可以接收一个Function，但是不推荐使用，影响性能，原因是component在内部是用React.createElement方法渲染的组件
+    如果使用Function方式，则组件内部每次有更新都会重新卸载和挂载组件，原因是每次传递给React.createElement的匿名函数每次是不一样的（任何匿名函数都不一样），就会重新创建
+    而children和render方式内部调用的是children和render方法，接收的匿名函数当作props传递进来，所以每次只会更新组件，不会重新创建
+  3.动态路由
+    path='/:id'
+    组件中props.match.id接收
+  4.嵌套路由
+    组件里再次使用Route组件
+  5.路由守卫
+    判断有无权限，没有权限就跳到登录页面，并且记住当前path，登录成功以后再跳回来
+    实现方式：新建一个守卫组件，在组件内部判断登录状态，如果登录了就直接返回该路由，如果没有登录就返回Redirect，重定向到登录页，并且传入当前路径
+    Redirect传入的值可以在localtion中获取
+    守卫组件：
+    render() {
+      const { isLogin } = this.props
+      if(isLogin) {
+        return <Route path={path} component={component} />;
+      } else {
+        return <Redirect to={pathname: '/login', state: {redirect: path}} />;
+      }
+    }
+    login页面：
+    render() {
+      const { isLogin, localtion } = this.props
+      const { redirect = '/' } = localtion.state || {}
+      if(isLogin) {
+        return <Redirect to={pathname:redirect} />;
+      } else {
+        return (
+          <div>
+            登录页面
+          </div>
+        );
+      }
+    }
+

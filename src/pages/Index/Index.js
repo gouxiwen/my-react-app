@@ -117,6 +117,7 @@ const Index = (props) => {
                             <Menu.Item key="/index/DialogPage">传送门实现弹窗组件</Menu.Item>
                             <Menu.Item key="/index/ContextPage">上下文</Menu.Item>
                             <Menu.Item key="/index/ReduxPage">redux</Menu.Item>
+                            <Menu.Item key="/index/ReactReduxPage">react-redux</Menu.Item>
                         </SubMenu>
                     </Menu> 
                 </Sider>
