@@ -32,7 +32,8 @@ react-redux：
 5.上下文context
   class组件中使用contextType挂载到类上，且只能挂载一个
   class组件和函数式组件中都可以使用Consumer，并且多个上下文可以多层嵌套使用
-  code:ContextPage.js
+  函数组件中用useContext(ThemeContext);
+  code:ContextPage.js（只实现基于类组件的，函数组件实现todo）
   注意事项：
   如果父组件中Provider提供的value是个对象，则父组件每次更新都会导致子组件重新渲染，所以需要将这个对象提升到父组件的state中
   如果state中的属性没有改变则不会进行重新渲染
@@ -55,13 +56,24 @@ react-redux：
   redux-logger中间件用于记录日志
   4.自己实现一个redux
   code:kRedux.js
-6.react-redux
-  react-redux是redux的react定制版，使用Provider注入store，使用connect在组件中使用，使得状态管理变得简单
+6.hooks v16.8的新特性，扩展了函数组件的能力，使得函数组件完全可以替代类组件，函数组件的颗粒度更小
+  在不使用class组件的情况下使用state和其他的React特性，比如副作用，上下文等
+  1.userState
+  2.userReducer，userState的替代方案，状态笔记复杂的时候
+  const [state, dispatch] = userReducer(reducer, initArg[, init])
+  reducer: 和redux中的reducer一样，initArg：初始值，init：用来处理初始值的函数，可选
+  3.useEffect,副作用，组件渲染到屏幕以后延迟执行
+  4.useLayoutEffect,副作用，组件渲染到屏幕之前执行，会阻塞视觉更新，和dom相关的才用到
+  5.useCallback 缓存一个函数
+7.react-redux
+  react-redux是redux的react定制版，使用Provider注入store，使用connect在类组件中使用，使得状态管理变得简单
+  在函数组件中使用hooks，useSelector，useDispatch，useSore
   1.使用react-redux
   2.自己实现一个react-redux
-  code:kReactRedux.js
-7.react-router
-  1.Switch组件表示独占，即只能渲染一个路由
+  code:kReactRedux.js（只实现基于类组件的，函数组件实现todo）
+8.react-router
+  1.有三种路由模式HashRouter/BrowserRouter/MemoryRouter
+  MemoryRouter不读取、不写入地址栏，适用于非浏览器环境，如react-native
   2.Route组件有三种渲染方式，children>component>render，都能接收到同样的route props，包括match，location和history
     children和render都可以接收一个Function，区别是children方式不管localtion是否匹配都会渲染
     component也可以接收一个Function，但是不推荐使用，影响性能，原因是component在内部是用React.createElement方法渲染的组件
@@ -82,21 +94,48 @@ react-redux：
       if(isLogin) {
         return <Route path={path} component={component} />;
       } else {
-        return <Redirect to={pathname: '/login', state: {redirect: path}} />;
+        return <Redirect to={{pathname: '/login', state: {redirect: path}}} />;
       }
     }
     login页面：
     render() {
-      const { isLogin, localtion } = this.props
-      const { redirect = '/' } = localtion.state || {}
-      if(isLogin) {
-        return <Redirect to={pathname:redirect} />;
-      } else {
-        return (
-          <div>
-            登录页面
-          </div>
-        );
-      }
+    const { isLogin, location } = this.props
+    const { redirect = '/' } = location.state || {}
+    if(isLogin) {
+      return <Redirect to={{pathname:redirect}} />;
+    } else {
+      return (
+        <div>
+          登录页面
+        </div>
+      );
     }
+  }
+    6.Switch组件表示独占，即只能渲染一个路由
+    7.自己实现react-router
+    code:kReactRouterDom（只实现基于类组件的，函数组件实现todo）
+9.项目实战
+  1.redux-saga实现异步action基于生成器函数generator
+  理解和redux-thunk的区别
+  主要api：
+  监听动作saga的action：takeEvery，take
+  调用异步操作：call(阻塞),fork(非阻塞)
+  状态更新：put (更新真正的action）
+  2.使用umi框架搭建项目
+  mkdir myapp && cd myapp
+  npm create umi
+  umi框架集成了路由+roadhog，是一个基于约定的企业级框架， roadhog是对webpack的简化封装
+  umi可以通过配置umi-plugin-react搭配dva一起使用，dva进一步封装了react-redux
+10.react源码学习
+  1.webpack编辑过程会自动调用babel将jsx转为标签描述对象,包含（type,props,children)，然后会自动调用React.createElement方法生产虚拟dom（Vnode）
+  2.react-dom的render将虚拟dom生成真实dom插入到页面容器
+  3.节点类型有22中，常用的有html原生节点，文本节点，class/function组件，fragment
+  4.协调reconciliation，即diff算法
+  深度优先遍历，算法复杂度是o(n)，每个节点有三种操作，删除，替换，更新（复用）
+  节点复用条件：
+    1.同级节点
+    2.type和key相同
+  fiber架构，fiber颗粒度比较小，fiber是指每个组件上将要完成或者已经完成的任务，每个组件有一个或者多个，它实际上是一个对象，用链表结构储存数据
+  child指向第一个子节点，sibling指向下一个兄弟节点，return指向父节点
+  code:kReact
 

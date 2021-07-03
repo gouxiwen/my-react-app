@@ -15,8 +15,28 @@ function countReducer(state = 0, action) {
       return state;
   }
 }
+const initUser = {
+  isLogin: false,
+  userInfo: {}
+}
+function userReducer(state = {...initUser}, action) {
+  switch (action.type) {
+    case "LOGIN_SUCESS":
+      return {
+        isLogin: true,
+        userInfo: {}
+      };
+    case "LOGOUT_SUCESS":
+      return {
+        isLogin: false,
+        userInfo: {}
+      };
+    default:
+      return state;
+  }
+}
 
-const store = createStore(countReducer, applyMiddleware(thunk, logger))
+// const store = createStore(countReducer, applyMiddleware(thunk, logger))
 // combineReducers可以绑定多个reducer，使用的时候用store.getState().count
-// const store = createStore(combineReducers({count: countReducer}), applyMiddleware(thunk, logger))
+const store = createStore(combineReducers({count: countReducer, user: userReducer}), applyMiddleware(thunk, logger))
 export default store; 

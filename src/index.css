@@ -50,3 +50,16 @@ ol, ul {
 .game-info {
   margin-left: 20px;
 }
+
+.border {
+  border: solid 1px red;
+  padding: 10px;
+  margin: 10px;
+}
+
+.pink {
+  color: pink;
+}
+.red {
+  color: red;
+}

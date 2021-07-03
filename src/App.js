@@ -2,6 +2,7 @@ import React, { PureComponent, Suspense } from 'react';
 import { Switch, HashRouter } from 'react-router-dom';
 import Loading from './components/Loading/Loading';
 import routes from './router';
+import RouterPage from './pages/ReactRouterPage/ReactRouterPage';
 
 import { renderRoutes } from 'react-router-config';
 // PureComponent和Component的区别：
@@ -23,6 +24,7 @@ export default class App extends PureComponent {
                     </Switch>
                 </Suspense>
             </HashRouter>
+            // <RouterPage></RouterPage>
         )
     }
 }
