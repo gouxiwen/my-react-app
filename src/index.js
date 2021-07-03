@@ -55,9 +55,9 @@ const jsx = (
 <div className="border">
   <p>全栈</p>
   <a href="http://www.kaikeba.com">开课吧</a>
-  {/* <ClassComponent  name="class" />
+  <ClassComponent  name="class" />
   <FunctionComponent  name="函数" />
-  {
+  {/* {
     [1,2,3].map(item => {
       return <div key={item}>{item}</div>
     })

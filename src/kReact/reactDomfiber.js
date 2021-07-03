@@ -6,14 +6,14 @@ let nextUnitOfWork = null
 // work in progress fiber root 正在执行的根fiber
 let  wipRoot = null
 
-function render_old(vnode, container) {
-  // vnode来自React.createElement
-  console.log('vnode', vnode)
-  // 1.vnode -> node
-  const node = createNode(vnode)
-  // 2.node 插入container
-  container.appendChild(node)
-}
+// function render_old(vnode, container) {
+//   // vnode来自React.createElement
+//   console.log('vnode', vnode)
+//   // 1.vnode -> node
+//   const node = createNode(vnode)
+//   // 2.node 插入container
+//   container.appendChild(node)
+// }
 
 function render(vnode, container) {
   wipRoot = {
@@ -26,24 +26,24 @@ function render(vnode, container) {
 }
 
 // 创建真实node，这里有22中节点类型需要区分
-function createNode_old(vnode) {
-  const {type, props} = vnode
-  let node = null
-  if (type === TEXT) {
-    node = document.createTextNode('')
-  } else if (typeof type === 'string') {
-    node = document.createElement(type) 
-  } else if (typeof type === 'function') {
-    node = type.isClassComponent ?  updateClassComponent(vnode) : updateFunctionComponent(vnode)
-  } else {
-    // type是undefined
-    // 文档片段
-    node = document.createDocumentFragment()
-  }
-  updateNodeAttr(node, props)
-  recencileChildren(props.children, node)
-  return node
-}
+// function createNode_old(vnode) {
+//   const {type, props} = vnode
+//   let node = null
+//   if (type === TEXT) {
+//     node = document.createTextNode('')
+//   } else if (typeof type === 'string') {
+//     node = document.createElement(type) 
+//   } else if (typeof type === 'function') {
+//     node = type.isClassComponent ?  updateClassComponent_old(vnode) : updateFunctionComponent_old(vnode)
+//   } else {
+//     // type是undefined
+//     // 文档片段
+//     node = document.createDocumentFragment()
+//   }
+//   updateNodeAttr(node, props)
+//   recencileChildren(props.children, node)
+//   return node
+// }
 function createNode(vnode) {
   const {type, props} = vnode
   let node = null
@@ -51,12 +51,12 @@ function createNode(vnode) {
     node = document.createTextNode('')
   } else if (typeof type === 'string') {
     node = document.createElement(type) 
-  } else if (typeof type === 'function') {
-    node = type.isClassComponent ?  updateClassComponent(vnode) : updateFunctionComponent(vnode)
-  } else {
-    // type是undefined
-    // 文档片段
-    node = document.createDocumentFragment()
+  // } else if (typeof type === 'function') {
+  //   node = type.isClassComponent ?  updateClassComponent(vnode) : updateFunctionComponent(vnode)
+  // } else {
+  //   // type是undefined
+  //   // 文档片段
+  //   node = document.createDocumentFragment()
   }
   updateNodeAttr(node, props)
   // recencileChildren(props.children, node)
@@ -64,26 +64,44 @@ function createNode(vnode) {
 }
 
 // 处理类组件
-function updateClassComponent(vnode) {
-  const {type, props} = vnode
+// function updateClassComponent_old(vnode) {
+//   const {type, props} = vnode
+//   let newProps = {}
+//   if(type.defaultProps) {
+//     newProps = Object.assign(type.defaultProps, props)
+//   }
+//   // 实例化
+//   let instance = new type(newProps)
+//   // 调用实例render方法
+//   const vvnode = instance.render()
+//   const node = createNode_old(vvnode)
+//   return node
+// }
+function updateClassComponent(fiber) {
+  const {type, props} = fiber
   let newProps = {}
   if(type.defaultProps) {
     newProps = Object.assign(type.defaultProps, props)
   }
   // 实例化
   let instance = new type(newProps)
-  // 调用实例render方法
-  const vvnode = instance.render()
-  const node = createNode(vvnode)
-  return node
+  // 调用实例render方法，render返回的jsx会被babel和React.createElement自动处理
+  const children = [instance.render()]
+  recencileChildren(fiber, children)
 }
 
 // 处理函数组件
-function updateFunctionComponent(vnode) {
-  const {type, props} = vnode
-  const vvnode = type(props)
-  const node = createNode(vvnode)
-  return node
+// function updateFunctionComponent_old(vnode) {
+//   const {type, props} = vnode
+//   const vvnode = type(props)
+//   const node = createNode_old(vvnode)
+//   return node
+// }
+function updateFunctionComponent(fiber) {
+  const {type, props} = fiber
+  // function组件返回的jsx会被babel和React.createElement自动处理
+  const children = [type(props)]
+  recencileChildren(fiber, children)
 }
 
 // 更新属性值
@@ -191,6 +209,7 @@ function performUnitOfWork(fiber) {
   const { type } = fiber
   if(typeof type === 'function') {
     // 组件
+    type.isClassComponent ?  updateClassComponent(fiber) : updateFunctionComponent(fiber)
   } else {
     // 原生标签
     updateHostComponent(fiber)
