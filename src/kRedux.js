@@ -124,9 +124,20 @@ function compose(...funs) {
 // 中间件
 export function logger(middleApi) {
   return (dispatch) => (action) => {
-    console.log("dispatch-logger", dispatch);
-    console.log(action.type + "->执行了");
-    return dispatch(action);
+    console.group(
+      `%c action %c${action.type} %c@ ${new Date().toLocaleTimeString()}`,
+      "color: gray",
+      "color: black",
+      "color: gray"
+    );
+
+    console.log("%cprev state", "color: gray", middleApi.getState());
+    console.log("%caction", "color: blue", action);
+    const nextState = dispatch(action);
+    console.log("%cnext state", "color: green", middleApi.getState());
+
+    console.groupEnd();
+    return nextState;
   };
 }
 
