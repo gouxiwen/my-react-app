@@ -10,6 +10,7 @@ export const connect =
     // mergePros // 没有实现
   ) =>
   (WrapComponent) => {
+    //   最新源码返回的是函数组件，最终调用react的useSyncExternalStore hooks实现订阅和更新数据，这里用类组件说明原理
     return class extends Component {
       static contextType = Valuecontext;
       constructor() {
@@ -24,6 +25,7 @@ export const connect =
         this.update();
         // 订阅store更新
         this.unsubscribe = subscribe(() => {
+          // 源码中利用快照和最新的value比较，判断state是否变化，防止重复更新
           this.update();
         });
       }
@@ -58,11 +60,13 @@ export const connect =
     };
   };
 
-export const useSelector = (fn = (state) => ({ state })) => {
+export function useSelector(fn = (state) => ({ state })) {
+  // 源码中是通过调用react的useSyncExternalStoreWithSelector hooks包装selector，并最终调用useSyncExternalStore实现订阅和更新数据，和connect一致
   const { getState, subscribe } = useContext(Valuecontext);
   const [, setstate] = useState(0);
   useEffect(() => {
     const unsubscribe = subscribe(() => {
+      // 源码中利用快照和最新的value比较，判断state是否变化，防止重复更新
       setstate((v) => v + 1);
     });
     return () => {
@@ -70,12 +74,12 @@ export const useSelector = (fn = (state) => ({ state })) => {
     };
   }, [subscribe]);
   return fn(getState());
-};
+}
 
-export const useDispatch = () => {
+export function useDispatch() {
   const { dispatch } = useContext(Valuecontext);
   return dispatch;
-};
+}
 
 export class Provider extends Component {
   render() {
