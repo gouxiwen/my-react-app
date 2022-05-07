@@ -4,18 +4,18 @@ export function createStore(reducer, enhancer) {
     return enhancer(createStore)(reducer);
   }
   let currentState = undefined;
-  let currenListens = [];
+  let currentListeners = [];
   let isDispatching = false;
 
   function getState() {
     return currentState;
   }
 
-  let nextListeners = currenListens;
-  // 将新的监听函数和当前监听函数隔离开
+  let nextListeners = currentListeners;
+  // 每次添加订阅和取消订阅时需要拷贝一个新的完全隔离的数组进行操作，防止在dispatch时发生bug
   function ensureCanMutateNextListeners() {
-    if (nextListeners === currenListens) {
-      nextListeners = currenListens.slice();
+    if (nextListeners === currentListeners) {
+      nextListeners = currentListeners.slice();
     }
   }
   const subscribe = (listener) => {
@@ -35,6 +35,7 @@ export function createStore(reducer, enhancer) {
       // 没有移除的话，先找到位置，通过splice移除
       const index = nextListeners.indexOf(listener);
       nextListeners.splice(index, 1);
+      currentListeners = null;
     };
   };
 
@@ -50,15 +51,16 @@ export function createStore(reducer, enhancer) {
     } finally {
       isDispatching = false;
     }
-    const listeners = (currenListens = nextListeners);
+    const listeners = (currentListeners = nextListeners);
 
     for (let i = 0; i < listeners.length; i++) {
       const listener = listeners[i];
       listener();
     }
+    return action;
   }
 
-  dispatch({ type: "@INIT/REDUX-KKB" });
+  dispatch({ type: "@INIT/REDUX-MY" });
 
   return {
     getState,
