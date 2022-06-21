@@ -211,7 +211,7 @@ function performUnitOfWork(fiber) {
     // 组件
     type.isClassComponent ?  updateClassComponent(fiber) : updateFunctionComponent(fiber)
   } else {
-    // 原生标签
+    // 原生标签，组件经过recencileChildren后一定会走到原生标签这里，从而添加真实dom到fiber，而组件fiber没有真实dom，在commitWork阶段中会找到最近的祖先节点进行插入
     updateHostComponent(fiber)
   }
   // 获取下一任务
